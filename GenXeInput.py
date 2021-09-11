@@ -33,3 +33,5 @@ with open(output, 'w', encoding='UTF8') as f:
                writer.writerow(np.array([string]))
             j+=1
         i+=1
+
+#written at Sep 11 2021
