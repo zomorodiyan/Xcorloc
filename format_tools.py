@@ -2,15 +2,20 @@ import numpy as np
 import re # required to use re.search for finding index of patterns in a string
 
 def format_float(b):
-    b_s = "{:.3f}".format(b)
-    if (b < 10): b_s = '0'+b_s
-    if (b < 100): b_s = '0'+b_s
-    if (b < 1000): b_s = '0'+b_s
+    sign = 1
+    if b < 0: sign = -1
+    absb = np.abs(b)
+    b_s = "{:.3f}".format(absb)
+    if (absb < 10): b_s = '0'+b_s
+    if (absb < 100): b_s = '0'+b_s
+    if (sign > 0): b_s = '0'+b_s
+    else: b_s = '-'+b_s
     return b_s
+
 
 def format_float_general(b,desired_digits=4):
     b_s = "{:.3f}".format(b)
-    n = (desired_digits-1)-int(np.log10(b))
+    n = (desired_digits-1)-int(np.abs(np.log10(b)))
     b_s = '0'*n + b_s
     return b_s
 
@@ -77,8 +82,6 @@ def formater2(text_org):
             found = patern
         else: # otherwise use the rest of the text_org as the found pattern
             found = text_org[index+1:]
-            print('index',index)
-            print('found',found)
             end = True
         found_index = text.find(found)
         text = text[found_index+len(found):]
@@ -91,17 +94,3 @@ def formater2(text_org):
         index += len(replacement) # we modified the text so its long
 
     return text_org
-
-def main():
-    '''
-    a = 2.3
-    print(format_float_general(a))
-
-    text_org = '603879074	2014	6	2	18	09	  45	 19.9999	  45	  45	  45'
-    print(formater1(text_org))
-    '''
-
-    text_org = 'ISC FUG Pn 15.62 0.7521 5 0.6 09'
-    print(text_org)
-    print(formater2(text_org))
-main()
